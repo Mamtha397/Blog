@@ -1,0 +1,114 @@
+<!-- views/signup.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Node Authentication</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <style>
+        body        { padding-top:80px; }
+        
+        #login {
+          display: none;
+        }
+        
+        #logoutBtn {
+          display: none;
+        }
+
+        #idLabel {
+          display: none;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+
+<div class="col-sm-10 col-sm-offset-1">
+
+    <h1><span class="fa fa-home"></span> HOME</h1>
+
+   <!-- LOGIN FORM -->
+   <a href="/login" id="loginBtn"><span class="fa fa-user"></span> Login</a>
+   <a href="/signup" id="signUpBtn"><span class="fa fa-user"></span> Signup</a>
+   <a href="/" id="logoutBtn"><span class="fa fa-user"></span> Logout</a>
+
+  <hr>
+
+  <div id="notlogin">
+    <h3 style="color: red;">Please login to post blogs.</h3>
+  </div>
+
+  <div id="login">
+      <form action="/" method="post" id="testformid">
+            <label id ="titleLabel">Title:</label>
+            <input type="text" id="idLabel" class="form-control" name="id">
+            <input type="text" id="title" class="form-control" name="title" required>
+            <br>
+            <label>Content:</label>
+            <br>
+            <textarea form ="testformid" name="content" id="content" class="form-control" cols="78" required></textarea>
+            <br>
+            <br>
+            <button type="submit" class="btn btn-warning btn-lg">POST</button>
+    </form>
+
+    
+
+  </div>
+
+  <hr>
+<br>
+<h2 style="text-decoration: underline;" >BLOGS</h2>
+
+  <div id="displayContent">
+    {{#if content}}
+    {{#each content}}
+    <h3>{{this.title}}</h3>
+        <p>{{this.cont}}</p>
+        <script>
+          var myParam = location.search.split('lo=')[1]; 
+          if(myParam=="{{this.id}}")
+          {
+            var h3 = document.createElement("BUTTON");
+        var t = document.createTextNode("Edit");//change according to collection
+        h3.appendChild(t);
+        h3.onclick = function() 
+        { 
+          document.getElementById('idLabel').value="{{this._id}}";
+          document.getElementById('title').value="{{this.title}}";
+          document.getElementById('content').value="{{this.cont}}";
+        };
+
+        document.getElementById("displayContent").appendChild(h3);
+          }
+        </script>
+
+        <hr>
+    {{/each}}
+{{else}}
+    <p><em>There is no Blogs...</em></p>
+{{/if}}
+  </div>
+  
+
+</div>
+
+</div>
+</body>
+<script>
+      var myParam = location.search.split('lo=')[1];
+    //console.log(myParam);
+    if(myParam!=undefined)
+    {
+      document.getElementById("loginBtn").style.display = "none";
+      document.getElementById("signUpBtn").style.display = "none";
+      document.getElementById("logoutBtn").style.display = "block";
+      document.getElementById("notlogin").style.display = "none";
+      document.getElementById("login").style.display = "block";
+    }
+  </script>
+
+
+</html>
